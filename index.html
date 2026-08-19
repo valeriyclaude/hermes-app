@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Гермес</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="wordmark">ГЕРМЕС</div>
+      <div class="statusline"><span class="led" id="host-led"></span><span id="host-status">mac-mini · …</span></div>
+    </div>
+    <button id="refresh" class="icon-btn" title="Обновить">⟳</button>
+  </header>
+
+  <!-- ── ПУЛЬТ ──────────────────────────────────────────────────────────── -->
+  <section id="tab-pult" class="tabpane">
+    <div class="panel">
+      <div class="panel-title">Сейчас в работе</div>
+      <div id="now-working"><div class="muted">…</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Очередь</div>
+      <div id="queue"><div class="muted">…</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Пульс</div>
+      <div id="pulse" class="pulse"><div class="muted">…</div></div>
+    </div>
+  </section>
+
+  <!-- ── КАНБАН ─────────────────────────────────────────────────────────── -->
+  <section id="tab-kanban" class="tabpane hidden">
+    <div class="filterbar" id="filters"></div>
+    <main class="board">
+      <div class="column">
+        <div class="col-head">Надо <span class="badge" id="cnt-todo">0</span></div>
+        <div class="col-body" id="col-todo"></div>
+      </div>
+      <div class="column">
+        <div class="col-head">В работе <span class="badge" id="cnt-inprogress">0</span></div>
+        <div class="col-body" id="col-inprogress"></div>
+      </div>
+      <div class="column">
+        <div class="col-head">Готово <span class="badge" id="cnt-done">0</span></div>
+        <div class="col-body" id="col-done"></div>
+      </div>
+    </main>
+    <button id="add-task" class="fab" title="Новая задача">＋</button>
+  </section>
+
+  <!-- ── ВХОДЯЩИЕ ───────────────────────────────────────────────────────── -->
+  <section id="tab-inbox" class="tabpane hidden">
+    <div class="hint">🎙 Предложения из голосовых PLAUD. Заметки и события можно исполнить
+      сразу, остальное — донастроить и отправить в канбан.</div>
+    <div class="col-body single" id="col-pending"></div>
+    <details class="archive"><summary>Отклонённые</summary>
+      <div class="col-body single" id="col-rejected"></div>
+    </details>
+  </section>
+
+  <!-- ── АГЕНТЫ ─────────────────────────────────────────────────────────── -->
+  <section id="tab-agents" class="tabpane hidden">
+    <div id="agents-list"><div class="muted" style="padding:14px">…</div></div>
+  </section>
+
+  <!-- ── МОДУЛИ ─────────────────────────────────────────────────────────── -->
+  <section id="tab-modules" class="tabpane hidden">
+    <div class="hint">Выключенный модуль исчезает из Пульта и не тратит токены.</div>
+    <div id="modules-list"><div class="muted" style="padding:14px">…</div></div>
+    <div class="panel">
+      <div class="panel-title">Календарь</div>
+      <div id="cal-list" class="cal-list"><div class="muted">…</div></div>
+    </div>
+  </section>
+
+  <nav class="bnav">
+    <button class="tab active" data-tab="pult">Пульт</button>
+    <button class="tab" data-tab="kanban">Канбан</button>
+    <button class="tab" data-tab="inbox">Вход <span class="badge" id="cnt-inbox">0</span></button>
+    <button class="tab" data-tab="agents">Агенты</button>
+    <button class="tab" data-tab="modules">Модули</button>
+  </nav>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-title" id="modal-title">Изменить</div>
+      <div id="modal-fields"></div>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="btn ghost">Отмена</button>
+        <button id="modal-save" class="btn primary">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>
