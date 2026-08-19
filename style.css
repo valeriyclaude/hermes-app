@@ -128,6 +128,7 @@ html, body { margin: 0; padding: 0 0 68px; background: var(--bg); color: var(--t
 .tag.conf { background: transparent; color: var(--muted); font-family: var(--mono); font-size: 10.5px; }
 .tag.proj { background: rgba(167,139,224,.15); color: #A78BE0; }
 .tag.due { background: rgba(224,164,88,.13); color: var(--brass); font-family: var(--mono); font-size: 10.5px; }
+.tag.wait { background: rgba(226,139,166,.16); color: var(--warn); animation: breathe 2.2s ease-in-out infinite; }
 .card .title { font-weight: 600; margin-bottom: 4px; }
 .card .summary { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
 .card .detail { font-size: 13px; background: rgba(0,0,0,.25); border-radius: 8px;

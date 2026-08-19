@@ -169,7 +169,11 @@
       : (t.sphere ? `<span class="tag sphere">${esc(t.sphere)}</span>` : "");
     const src = { plaud: "🎙", hermes: "🤖", claude_code: "💻" }[t.source] || "";
     const due = t.due ? `<span class="tag due">⏰ ${esc(fmtDate(t.due))}</span>` : "";
-    const agent = t.hermes_ref ? `<span class="tag proj">🤖 ${esc(t.hermes_status || "у Hermes")}</span>` : "";
+    const HK_LABEL = { blocked: "ждёт тебя", running: "работает", review: "на проверке",
+      done: "сделано", ready: "в очереди", todo: "в очереди", triage: "в очереди", scheduled: "в очереди" };
+    const hs = t.hermes_status;
+    const agent = t.hermes_ref
+      ? `<span class="tag ${hs === "blocked" ? "wait" : "proj"}">🤖 ${esc(HK_LABEL[hs] || "у Hermes")}</span>` : "";
     let actions = "";
     if (t.readonly)
       actions = ""; // зеркало карточки агента — управляется из TG-чата с Hermes
