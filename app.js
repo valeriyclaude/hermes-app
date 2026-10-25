@@ -22,13 +22,21 @@
   // backend — на Mac mini за туннелем, чей адрес меняется. Свежий адрес приходит
   // в ?api= (кнопку обновляет tunnel_manager при каждом переподключении);
   // запасной путь — localStorage от прошлого визита.
-  let API_BASE = params.get("api") || "";
+  // Аудит 25.10: базу принимаем ТОЛЬКО из белого списка — иначе ссылка
+  // ?api=https://чужой-сервер увела бы туда X-Dev-Key из localStorage.
+  // localhost.run выдаёт адреса *.lhr.life; локальный запуск — 127.0.0.1/localhost.
+  const apiOk = (u) => /^https:\/\/[a-z0-9-]+\.lhr\.life$/.test(u) ||
+    /^http:\/\/(127\.0\.0\.1|localhost)(:\d{1,5})?$/.test(u);
+  const clean = (u) => (u || "").trim().replace(/\/+$/, "");
+  let API_BASE = clean(params.get("api"));
+  if (API_BASE && !apiOk(API_BASE)) API_BASE = "";
   try {
     if (API_BASE) localStorage.setItem("hermesos_api", API_BASE);
-    else if (!location.hostname.startsWith("127.") && location.hostname !== "localhost")
-      API_BASE = localStorage.getItem("hermesos_api") || "";
+    else if (!location.hostname.startsWith("127.") && location.hostname !== "localhost") {
+      const saved = clean(localStorage.getItem("hermesos_api"));
+      API_BASE = apiOk(saved) ? saved : "";
+    }
   } catch (e) {}
-  API_BASE = API_BASE.replace(/\/+$/, "");
 
   function authHeaders() {
     const h = { "Content-Type": "application/json" };
